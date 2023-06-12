@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.sql.Date;
 
 @Data
-public class Task implements Serializable {
+public class Todo implements Serializable {
     private int id;
     private String title;
     private String content;
