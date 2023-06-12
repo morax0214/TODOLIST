@@ -4,4 +4,13 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost/todolist
-    
+
+mybatis:
+  type-aliases-package: com.morax.pojo
+  mapper-locations: classpath:com/morax/dao/*.xml
+
+logging:
+  level:
+    cn.itcast: debug
+  pattern:
+    dateformat: MM-dd HH:mm:ss:SSS
