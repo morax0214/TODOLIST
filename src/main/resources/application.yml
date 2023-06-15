@@ -4,6 +4,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost/todolist
+    username: root
+    password: 1234
 
 mybatis:
   type-aliases-package: com.morax.pojo

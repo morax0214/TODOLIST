@@ -1,6 +1,7 @@
 package com.morax.controller;
 
 import com.morax.entity.Result;
+import com.morax.pojo.User;
 import com.morax.service.UserService;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,8 +18,9 @@ public class UserController {
     /**
      * Sign in
      */
-    private Result signIn(){
-
+    @RequestMapping("/signIn")
+    private Result signIn(@RequestBody User user){
+        System.out.println(user);
         return null;
     }
 

@@ -1,35 +1,114 @@
-<html>
-    <head>
-        <!-- 页面meta -->
-        <meta charset="utf-8">
-        <title>登录</title>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <!-- 页面meta -->
+    <meta charset="utf-8">
 
+    <title>登录</title>
 
-        <!-- import CSS -->
-        <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-    </head>
-    <body>
-        <div id="app">
-            <div style="text-align:center;">
+    <style>
+        .el-input {
+            width: 150px;
+        }
+    </style>
 
-                <h1 align="center">用户登录</h1>
-                <input v-model="" placeholder="请输入用户名"/> <br/>
-                <input v-model="" placeholder="请输入密码"/> <br/>
-                <el-button type="success" icon="el-icon-check" circle @click="loginClock"></el-button>
-            </div>
+    <!-- import CSS -->
+    <link rel="stylesheet" href="../element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="../js/vue.js"></script>
+    <script src="../element-ui/lib/index.js"></script>
+    <script src="../js/axios-0.18.0.js"></script>
+
+</head>
+<body data-spy="scroll" data-target="#myNavbar" data-offset="150" bgcolor="#E6E6FA">
+    <div id="app">
+        <div class="search" style="text-align:center;">
+
+            <el-form :inline="true" status-icon :model="user" :rules="rules" ref="user">
+                <br/>
+                <br/>
+                <br/>
+                <h1 align="center">User login</h1>
+                <br/>
+                <br/>
+                <br/>
+                <el-form-item label="name" prop="name">
+                    <el-input
+                            size="mini"
+                            v-model="user.name"
+                    ></el-input>
+                </el-form-item>
+                <br/>
+                <el-form-item label="password" prop="password">
+                    <el-input size="mini" v-model="user.password" type="password"></el-input>
+                </el-form-item>
+                <br/>
+                <el-button size="mini" type="primary" @click="signin('user')">Sign in</el-button>
+            </el-form>
 
         </div>
+    </div>
+</body>
 
 
-    </body>
+
+<script>
+    const nameValidate = (rule,value,callback) => {
+        const tset = /^[a-zA-Z]/;
+        if (tset.test(value)){
+            callback();
+        }else {
+            return callback(new Error("不能以数字、特殊字符开头"));
+        }
+    };
+
+    const nameValidate2 = (rule,value,callback) => {
+        const tset = /[^\w]/;
+        if (tset.test(value)){
+            callback(new Error("用户名不能包含空格等非法字符"));
+        }else {
+            callback();
+        }
+    };
+    new Vue({
+        el:'#app',
+        data:{
+            user:{
+                name:'',
+                password:''
+            },
+            rules: {
+                name: [
+                    { required: true, message: '请输入用户名', trigger: 'blur' },
+                    { min: 5, max: 10, message: '长度在 5 到 20 个字符', trigger: 'blur' },
+                    { validator: nameValidate, trigger: 'blur'},
+                    { validator: nameValidate2, trigger: 'blur'}
+                ],
+                password: [
+                    { required: true, message: '请输入密码', trigger: 'blur' },
+                ]
+            },
+
+        },
+        methods:{
+            // 用户登录
+            signin(formName){
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+                        axios.post("/user/signIn",this.user).then(res => {
+                            if (res.data.flag){
+                                this.$message.success(res.data.message);
+                            }else {
+                                this.error.$message(res.data.message);
+                            }
+                        })
+                    }
+                });
 
 
-
-    <!-- import Vue before Element vue.js -->
-    <script src="https://unpkg.com/vue@2/dist/vue.js"></script>
-    <!-- import JavaScript -->
-    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
-    <!-- axios -->
-    <script src="../js/axios-0.18.0.js"></script>
+            },
+        }
+    })
+</script>
 
 </html>
